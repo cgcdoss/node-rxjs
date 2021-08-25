@@ -1,0 +1,3 @@
+# Projeto de Testes do RxJS
+
+Projeto utilizado apenas para testar as funções e operadores do RxJS, assim como Observables, Subjects, etc...
