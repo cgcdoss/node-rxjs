@@ -1,6 +1,7 @@
 import express from 'express';
 import { concat, from, Observable, of, Subscriber } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
+import { debounceTime, map, retry, tap } from 'rxjs/operators';
 import { usuarios } from './data';
 
 const app = express();
@@ -61,5 +62,17 @@ of('https://cgcnode.herokuapp.com/somar?a=1&b=2').subscribe(value => {
     error: (err) => console.log('ajax erro:', err.message)
   });
 });
+
+/**************************/
+
+let newUsers = [];
+from(usuarios)
+  .pipe(
+    // debounceTime(500), // adiciona um tempo de espera para caso seja emitido um novo next() no Observable, muito útil quando é utilizado em inputs autocompletes
+    retry(4), // fará 4 tentativas, caso haja falha na requisição
+    tap(usuario => newUsers.push(usuario)), // usado quando se deseja alterar o estado externo (chamar uma function ou setar valor em uma propriedade externa), sem alterar o conteúdo do Observable
+    map(usuario => usuario.nome), // usado quande se deseja alterar o conteúdo do Observable, nesse caso o Observable deixou de ser de Usuario e passou a ser de string
+  ).subscribe(value => console.log('operadores: ', value));
+
 
 app.listen(3333);
