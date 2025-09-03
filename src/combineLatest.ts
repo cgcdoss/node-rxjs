@@ -1,6 +1,6 @@
 import { combineLatest, tap, timer } from 'rxjs';
 
-const timer$ = timer(0, 1000);
+const timer$ = timer(0, 500);
 const timer2$ = timer(0, 1500);
 
 combineLatest([
