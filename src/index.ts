@@ -3,6 +3,7 @@ import { concat, from, Observable, of, Subscriber } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { debounceTime, map, retry, tap } from 'rxjs/operators';
 import { usuarios } from './data';
+import { XMLHttpRequest } from 'xmlhttprequest';
 
 const app = express();
 
@@ -55,8 +56,6 @@ concat(source1$, source2$).subscribe(value => console.log('concat: ', value), er
 /**************************/
 
 of('https://cgcnode.herokuapp.com/somar?a=1&b=2').subscribe(value => {
-  global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; // para o ajax() funcionar
-
   ajax(value).subscribe({
     next: (resp) => console.log('ajax: ', resp),
     error: (err) => console.log('ajax erro:', err.message)
